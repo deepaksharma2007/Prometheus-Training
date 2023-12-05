@@ -7,10 +7,10 @@ up{region="IN"}
 
 sum ( up{region="IN"} )
 
-### range vector example
+# range vector example
 node_memory_MemFree_bytes{env="prod"}[10m]
 
-### instant vector example
+# instant vector example
 node_memory_MemFree_bytes{env="prod"}
 
 node_memory_MemFree_bytes{env!="prod"}
