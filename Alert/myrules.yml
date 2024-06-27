@@ -1,0 +1,15 @@
+groups:
+    - name: mycluster_rules
+      rules:
+        - record: deepak_memTotal_used
+          expr: (node_memory_MemTotal_bytes - node_memory_MemFree_bytes )/1024 /1024
+
+        - alert: ProdNodeDown
+          expr: up{env="Prod"} == 0
+          for: 2m
+          labels:
+            servrity: critical
+          annotations:
+             summary: "This is a Prod Node of docker host"
+             description: "This is desc {{ $labels.job }} Byy..."    # This will print job name . So we can easily find out issue
+             app_link: http://1.2.3.4:80
