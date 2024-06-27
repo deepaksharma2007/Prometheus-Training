@@ -1,0 +1,16 @@
+route:
+  group_by: ['Myprodcluster']
+  receiver: slack_general
+  routes:
+  # Send severity=slack alerts to slack.
+  - match:
+      severity: slack
+    receiver: slack_general
+
+receivers:
+- name: slack_general
+  slack_configs:
+  - api_url: https://hooks.slack.com/services/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
+    channel: '@Deepak Sharma'
+    send_resolved: true
+      # title: 'Urgent ProdNodeDown ...Please look ASAP!! '
