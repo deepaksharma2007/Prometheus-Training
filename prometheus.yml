@@ -1,0 +1,54 @@
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+           - 3.6.92.170:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "rules/myrules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+    static_configs:
+      - targets: ["localhost:9090"]
+        labels:
+          env: "Prod"
+          region: "IN"
+          team: "Sre"
+  - job_name: "NodeDetails"
+    file_sd_configs:
+      - files:
+          - allnodesdetails.yml
+
+  - job_name: "myec2"
+    ec2_sd_configs:
+      - access_key: "DJXJNHEDNBDIEK4FL"
+        secret_key: "UaMGp37DDFJCvMQB5R+B8dCFqDGHWD9KLVafSSJHJDO"
+        region: "ap-south-1"
+    relabel_configs:
+     - source_labels: [__meta_ec2_public_ip]
+       regex: "(.*)"
+       replacement: "${1}:9100"
+       target_label: __address__
+     - source_labels: [__meta_ec2_tag_Country]
+       regex: "(.*)"
+       replacement: "${1}"
+       target_label: Country
+     - source_labels: [Country]
+       regex: India
+       action: keep
