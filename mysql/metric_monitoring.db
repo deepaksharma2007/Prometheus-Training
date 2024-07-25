@@ -157,6 +157,6 @@ CREATE EVENT collect_daily_stats
 set sql_log_bin = 1;
 
 -- Use a specific user (suggested)
-create user my2@'%' identified by 'P1e@seCh@ngeMe';
-grant all on my2.* to my2@'%';
-grant select on performance_schema.* to my2@'%';
+create user deep@'%' identified by 'P1e@seCh@ngeMe';
+grant all on my2.* to deep@'%';
+grant select on performance_schema.* to deep@'%';
